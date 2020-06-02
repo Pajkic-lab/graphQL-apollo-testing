@@ -1,42 +1,28 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer, gql } = require('apollo-server')
+const mongoose = require('mongoose')
+const typeDefs = require('./graphql/typeDefs')
+const resolvers = require('./graphql/resolvers')
 
 
-const books = [
-    {
-      title: 'Harry Potter and the Chamber of Secrets',
-      author: 'J.K. Rowling',
-    },
-    {
-      title: 'Jurassic Park',
-      author: 'Michael Crichton',
-    },
-  ];
 
-const typeDefs = gql`
-  type Book {
-    title: String
-    author: String
-  }
-  type Author {
-    name: String
-    books: [Book]
-  }
-  type Query {
-    books: [Book]
-    authors: [Author]
-  }
-`;
+require('dotenv').config()
+const server = new ApolloServer({ typeDefs, resolvers })
 
-const resolvers = {
-    Query: {
-      books: () => books,
-    },
-  };
-
-
-const server = new ApolloServer({ typeDefs, resolvers });
+mongoose.connect(process.env.MONGO_URI,
+{ useNewUrlParser: true,
+  useUnifiedTopology: true }
+).then(()=> {
+  console.log('mongoDB connected!!!')
+})
 
 
 server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
+  console.log(`Server ready at ${url}`)
 });
+
+
+
+
+
+
+

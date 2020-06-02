@@ -2,9 +2,6 @@ import React, { useReducer } from 'react'
 import authContext from './authContext'
 import authReducer from './authReducer'
 
-import { useQuery } from '@apollo/client'
-import gql from 'graphql-tag'
-
 
 
 const AuthState = props => {
@@ -20,11 +17,15 @@ const AuthState = props => {
         console.log(name, email, password)
     }
 
+    const getData = () => {
+      
+    }
+
     return (
         <authContext.Provider
         value={{
-          isAuthenticated: state.isAuthenticated,
-          register: register
+          register: register,
+          getData: getData
         }}
         >
           { props.children }
@@ -33,3 +34,5 @@ const AuthState = props => {
 }
 
 export default AuthState
+
+

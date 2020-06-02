@@ -1,5 +1,9 @@
 import React, { useState, useContext } from 'react'
 import AuthContext from '../context/auth/authContext'
+import { useEffect } from 'react'
+
+import { gql, useQuery } from '@apollo/client'
+
 
 
 const LandingPage = props => {
@@ -11,7 +15,7 @@ const LandingPage = props => {
     })
 
     const authContext = useContext(AuthContext)
-    const { isAuthenticated, register } = authContext
+    const { register, getData } = authContext
 
     const { name, email, password } = formData
 
@@ -24,6 +28,13 @@ const LandingPage = props => {
         register({name, email, password})
         setFormData({ ...formData, name:'', email: '', password: '' })
     }
+
+    useEffect(()=>{
+        getData()
+    })
+
+    const { loading, error, data } = useQuery(GET_BOOKS)
+    console.log(data)
 
     return (
         <div>
@@ -47,3 +58,14 @@ const LandingPage = props => {
 }
 
 export default LandingPage
+
+
+//graphql
+const GET_BOOKS = gql`
+  query GetBooksAndAuthors {
+    books {
+      title
+      author
+  }
+}
+`
