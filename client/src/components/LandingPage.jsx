@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react'
 import AuthContext from '../context/auth/authContext'
-import { useEffect } from 'react'
 
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 
 
 
@@ -25,16 +24,13 @@ const LandingPage = props => {
 
     const onSubmit = e => {
         e.preventDefault()
-        register({name, email, password})
+        reg()
+        //register({name, email, password})
         setFormData({ ...formData, name:'', email: '', password: '' })
     }
 
-    useEffect(()=>{
-        getData()
-    })
-
-    const { loading, error, data } = useQuery(GET_BOOKS)
-    console.log(data)
+    const [reg, {data, loading, error}] = useMutation(REGISTER)
+    //console.log(data)
 
     return (
         <div>
@@ -61,11 +57,6 @@ export default LandingPage
 
 
 //graphql
-const GET_BOOKS = gql`
-  query GetBooksAndAuthors {
-    books {
-      title
-      author
-  }
-}
+const REGISTER = gql`
+  mutation register(name: String!, email: String!, password: String!) {}
 `
