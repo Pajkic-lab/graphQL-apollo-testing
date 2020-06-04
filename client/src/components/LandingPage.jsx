@@ -14,7 +14,7 @@ const LandingPage = props => {
     })
 
     const authContext = useContext(AuthContext)
-    const { register, getData } = authContext
+    //const { register, getData } = authContext
 
     const { name, email, password } = formData
 
@@ -24,13 +24,13 @@ const LandingPage = props => {
 
     const onSubmit = e => {
         e.preventDefault()
-        reg()
+        register()
         //register({name, email, password})
         setFormData({ ...formData, name:'', email: '', password: '' })
     }
 
-    const [reg, {data, loading, error}] = useMutation(REGISTER)
-    //console.log(data)
+    const [register, {data, loading, error}] = useMutation(REGISTER)
+    console.log(data)
 
     return (
         <div>
@@ -58,5 +58,11 @@ export default LandingPage
 
 //graphql
 const REGISTER = gql`
-  mutation register(name: String!, email: String!, password: String!) {}
+  mutation register($name: name $email: email $password: password){
+      id
+      email
+      token
+      name
+  }
 `
+

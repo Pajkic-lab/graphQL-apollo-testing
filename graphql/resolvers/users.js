@@ -46,8 +46,8 @@ module.exports = {
 
     async register(_, args, context, info) {
       console.log(args) 
-      
-      const { email, name, password } = args.registerInput
+      /*
+      const { email, name, password } = args
       const user = User.findOne({email})
       if(user){
         throw new UserInputError('User alredy exist')
@@ -63,7 +63,7 @@ module.exports = {
         ...res._doc,
         id: res._id,
         token
-      }
+      }  */
     } 
   }
 
