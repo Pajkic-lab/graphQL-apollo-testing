@@ -15,6 +15,7 @@ type Mutation {
 }
 type Query {
     getPost(postId: ID!): Post
+    greeting: String
 }
 type Post {
     id: ID!

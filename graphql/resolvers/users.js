@@ -46,6 +46,7 @@ module.exports = {
 
     async register(_, args, context, info) {
       console.log(args) 
+      
       /*
       const { email, name, password } = args
       const user = User.findOne({email})

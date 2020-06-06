@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react'
 import AuthContext from '../context/auth/authContext'
-
-import { gql, useMutation } from '@apollo/client'
+import { gql, useQuery, useMutation } from '@apollo/client'
 
 
 
@@ -14,7 +13,8 @@ const LandingPage = props => {
     })
 
     const authContext = useContext(AuthContext)
-    //const { register, getData } = authContext
+    const { register, getData, user } = authContext
+    console.log(user)
 
     const { name, email, password } = formData
 
@@ -24,12 +24,16 @@ const LandingPage = props => {
 
     const onSubmit = e => {
         e.preventDefault()
-        register()
+        reg()
         //register({name, email, password})
         setFormData({ ...formData, name:'', email: '', password: '' })
     }
 
-    const [register, {data, loading, error}] = useMutation(REGISTER)
+    const [reg, {data}] = useMutation(REGISTER, {
+        variables: { name, email, password }
+    })
+
+    //const { loading, error, data } = useQuery(GET_GREETING)
     console.log(data)
 
     return (
@@ -56,13 +60,21 @@ const LandingPage = props => {
 export default LandingPage
 
 
-//graphql
-const REGISTER = gql`
-  mutation register($name: name $email: email $password: password){
-      id
-      email
-      token
-      name
+
+
+const GET_GREETING = gql`
+  query{
+      greeting
   }
 `
 
+const REGISTER = gql`
+    mutation register($name: String!, $email: String!, $password: String!) {
+        register(name: $name, email: $email, password: $password ) {
+            id
+            email
+            token
+            name
+        }
+    }
+`
