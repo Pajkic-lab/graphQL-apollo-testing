@@ -10,7 +10,9 @@ const server = new ApolloServer({ typeDefs, resolvers })
 
 mongoose.connect(process.env.MONGO_URI,
 { useNewUrlParser: true,
-  useUnifiedTopology: true }
+  useUnifiedTopology: true,
+  useCreateIndex: true
+ }
 ).then(()=> {
   console.log('mongoDB connected!!!')
 })

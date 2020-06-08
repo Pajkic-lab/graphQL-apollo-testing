@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import AuthContext from '../context/auth/authContext'
-import { gql, useQuery, useMutation } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
+import { GET_GREETING, REGISTER } from '../graphql'
 
 
 
@@ -14,7 +15,7 @@ const LandingPage = props => {
 
     const authContext = useContext(AuthContext)
     const { register, getData, user } = authContext
-    console.log(user)
+    //console.log(user)
 
     const { name, email, password } = formData
 
@@ -22,19 +23,15 @@ const LandingPage = props => {
         ...formData, [e.target.name]: e.target.value
     })}
 
-    const onSubmit = e => {
+    const onSubmit = async e => {
         e.preventDefault()
-        reg()
-        //register({name, email, password})
+        const {data} = await reg({variables: {name, email, password}})
+        register(data)
         setFormData({ ...formData, name:'', email: '', password: '' })
     }
 
-    const [reg, {data}] = useMutation(REGISTER, {
-        variables: { name, email, password }
-    })
-
-    //const { loading, error, data } = useQuery(GET_GREETING)
-    console.log(data)
+    const [reg] = useMutation(REGISTER)
+    const getGreetingsPovrat = useQuery(GET_GREETING)
 
     return (
         <div>
@@ -60,21 +57,9 @@ const LandingPage = props => {
 export default LandingPage
 
 
+/*
+const [reg, registerPovrat ] = useMutation(REGISTER, {
+        variables: { name, email, password, } 
+    })
+ */
 
-
-const GET_GREETING = gql`
-  query{
-      greeting
-  }
-`
-
-const REGISTER = gql`
-    mutation register($name: String!, $email: String!, $password: String!) {
-        register(name: $name, email: $email, password: $password ) {
-            id
-            email
-            token
-            name
-        }
-    }
-`

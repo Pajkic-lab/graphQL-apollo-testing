@@ -13,8 +13,8 @@ const AuthState = props => {
 
     const [state, dispatch] = useReducer(authReducer, initialState)
 
-    const register = ({name, email, password}) => {
-        console.log(name, email, password)
+    const register = (data) => {
+        console.log(data)
     }
 
     const getData = () => {

@@ -1,21 +1,9 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { UserInputError } = require('apollo-server');
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const { UserInputError } = require('apollo-server')
+const { SECRET_KEY } = require('../../config/secret')
 
-//const { validateRegisterInput, validateLoginInput } = require('../../util/validators');
 const User = require('../../modules/User')
-
-
-
-const generateToken = (user) => {
-  const token = jwt.sign({
-    id: user.id,
-    email: user.email,
-    name: user.name
-  }, process.env.SECRET_KEY, { expiresIn: '12h'})
-}
-
-
 
 
 module.exports = {
@@ -44,29 +32,30 @@ module.exports = {
 
 
 
-    async register(_, args, context, info) {
-      console.log(args) 
-      
-      /*
-      const { email, name, password } = args
-      const user = User.findOne({email})
-      if(user){
-        throw new UserInputError('User alredy exist')
+    async register(_, { name, email, password} ) {
+      try {
+        let user = await User.findOne({ email })
+         if(user) {
+             console.log('USER ALREDY EXISTS')
+         }
+         user= new User({ name, email, password })
+         const salt = await bcrypt.genSalt(10)
+         user.password = await bcrypt.hash(password, salt)
+         //await user.save()
+         const payload = { user: { id: user.id }}
+         /*jwt.sign(payload, SECRET_KEY, (err, token) => {
+             if(err) throw err
+             console.log(token)
+             return{ token }
+         })*/
+         const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '24h' })
+         console.log(token)
+         return { token }
+      } catch (err) {
+        console.log(err)
       }
-      password = await bcrypt.hash(password, 10)
-
-      const newUser = new User({email, name, password})
-      const res = await newUser //.save()
-
-      const token = generateToken(res)
-
-      return {
-        ...res._doc,
-        id: res._id,
-        token
-      }  */
     } 
-  }
+  } 
 
 
 }
