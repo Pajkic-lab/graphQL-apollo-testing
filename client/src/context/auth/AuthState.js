@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react'
 import authContext from './authContext'
 import authReducer from './authReducer'
+import { REGISTER_SUCCESS } from '../types'
 
 
 
@@ -8,18 +9,20 @@ const AuthState = props => {
     const initialState={
         token: localStorage.getItem('token'),
         isAuthenticated: false,
-        user: "testing context?"
+        user: null
     }
 
     const [state, dispatch] = useReducer(authReducer, initialState)
 
     const register = (data) => {
-        console.log(data)
+        const token = data.register.token
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: token
+      })
     }
 
-    const getData = () => {
-      
-    }
+    const getData = () => {}
 
     return (
         <authContext.Provider

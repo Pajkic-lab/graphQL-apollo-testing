@@ -43,11 +43,6 @@ module.exports = {
          user.password = await bcrypt.hash(password, salt)
          //await user.save()
          const payload = { user: { id: user.id }}
-         /*jwt.sign(payload, SECRET_KEY, (err, token) => {
-             if(err) throw err
-             console.log(token)
-             return{ token }
-         })*/
          const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '24h' })
          console.log(token)
          return { token }
