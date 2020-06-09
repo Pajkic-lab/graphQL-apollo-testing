@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react'
 import authContext from './authContext'
 import authReducer from './authReducer'
-import { REGISTER_SUCCESS } from '../types'
+import { REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT } from '../types'
 
 
 
@@ -14,21 +14,36 @@ const AuthState = props => {
 
     const [state, dispatch] = useReducer(authReducer, initialState)
 
-    const register = (data) => {
+    const register = (data, history) => {
         const token = data.register.token
         dispatch({
           type: REGISTER_SUCCESS,
           payload: token
-      })
+      }) 
+      history.push('/mainpage')
     }
 
-    const getData = () => {}
+    const login = (data, history) => {
+        const token = data.login.token
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: token
+        })
+        history.push('/mainpage')
+    }
+
+    const logout = () => {
+        dispatch({
+            type: LOGOUT
+        })
+    }
 
     return (
         <authContext.Provider
         value={{
           register: register,
-          getData: getData,
+          login: login,
+          logout: logout,
           user: state.user
         }}
         >

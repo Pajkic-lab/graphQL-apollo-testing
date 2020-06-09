@@ -1,12 +1,17 @@
 import React from 'react'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import LandingPage from './components/LandingPage'
+import MainPage from './components/MainPage'
+import PrivateRoute from './components/PrivateRoute'
 
-const App = props => {
+const App = () => {
   return (
     <div>
       <BrowserRouter>
-        <Route exact component={LandingPage} />
+        <Route exact path='/' component={LandingPage} />
+        <Switch>
+        <PrivateRoute exact path='/mainpage' component={MainPage} />
+        </Switch>
       </BrowserRouter>
     </div>
   )

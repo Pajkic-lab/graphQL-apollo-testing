@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import AuthContext from '../context/auth/authContext'
 import { useQuery, useMutation } from '@apollo/client'
-import { GET_GREETING, REGISTER } from '../graphql'
+import { GET_GREETING, REGISTER, LOGIN } from '../graphql'
 
 
 
@@ -14,8 +14,7 @@ const LandingPage = props => {
     })
 
     const authContext = useContext(AuthContext)
-    const { register, getData, user } = authContext
-    //console.log(user)
+    const { register, login } = authContext
 
     const { name, email, password } = formData
 
@@ -23,19 +22,27 @@ const LandingPage = props => {
         ...formData, [e.target.name]: e.target.value
     })}
 
-    const onSubmit = async e => {
+    const onRegister = async e => {
         e.preventDefault()
         const {data} = await reg({variables: {name, email, password}})
-        register(data)
+        register(data, props.history)
         setFormData({ ...formData, name:'', email: '', password: '' })
     }
 
-    const [reg] = useMutation(REGISTER)
+    const onLogin = async e => {
+        e.preventDefault()
+        const {data} = await log({variables: { email, password }})
+        login(data, props.history)
+        setFormData({ ...formData, name:'', email: '', password: ''})
+    }
+    
     const getGreetingsPovrat = useQuery(GET_GREETING)
+    const [reg] = useMutation(REGISTER)
+    const [log] = useMutation(LOGIN)
 
     return (
         <div>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onRegister}>
                 <h1>Register</h1>
                 <input onChange={onChange} value={name} name='name' placeholder='name' required /> <br/>
                 <input onChange={onChange} value={email} name='email' placeholder='email' required /> <br/>
@@ -44,7 +51,7 @@ const LandingPage = props => {
             </form>
 
 
-            <form>
+            <form onSubmit={onLogin}>
                 <h1>Login</h1>
                 <input onChange={onChange} value={email} name='email' placeholder='email' required /> <br/>
                 <input onChange={onChange} value={password} name='password' placeholder='password' required /> <br/>

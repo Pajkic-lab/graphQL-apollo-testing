@@ -12,3 +12,17 @@ export const GET_GREETING = gql`
         }
     }
 `
+export const LOGIN = gql`
+  mutation login( $email: String!, $password: String! ) {
+      login(email: $email, password: $password) {
+          token
+      }
+  }
+`
+export const GET_USER = gql`
+  mutation getUser( $token: String! ) {
+      getUser(token: $token) {
+          user
+      }
+  }
+`
