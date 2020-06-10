@@ -32,17 +32,19 @@ const AuthState = props => {
         history.push('/mainpage')
     }
 
-    const loadUser = () => {
+    const loadUser = ({getUser : {email, name, _id}}) => {
+      console.log({email, name, _id})
         dispatch({
           type: LOAD_USER,
-          payload: "nesto"
+          payload: {email, name, _id}
         })
     }
 
-    const logout = () => {
+    const logout = history => {
         dispatch({
             type: LOGOUT
         })
+        history.push('/')
     }
 
     return (

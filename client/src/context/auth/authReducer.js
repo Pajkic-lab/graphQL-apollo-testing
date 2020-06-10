@@ -1,4 +1,4 @@
-import { REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT } from "../types"
+import { REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, LOAD_USER } from "../types"
 
 
 export default (state, action) => {
@@ -11,6 +11,8 @@ export default (state, action) => {
         case LOGOUT:
             localStorage.removeItem('token')
             return { ...state, isAuthenticated: false, user: null, token: null }
+        case LOAD_USER:
+            return { ...state, isAuthenticated: true, user: payload }
     default: return state
     }
 }

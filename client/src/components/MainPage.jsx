@@ -4,27 +4,24 @@ import { useMutation } from '@apollo/client'
 import { GET_USER } from '../graphql'
 
 
-const MainPage = () => {
+const MainPage = ({history}) => {
 
     const authContext = useContext(AuthContext)
-    const { loadUser, logout } = authContext
-    let token = JSON.stringify(authContext.token)
+    const { loadUser, logout, user } = authContext
+    const token = authContext.token
 
-    useEffect( ()=>{
-        getUser() 
-        //loadUser(data)
+    useEffect( async ()=>{
+        const {data} = await getUser({variables: {token}}) 
+        loadUser(data) 
     }, [])
 
-    const [getUser] = useMutation(GET_USER, {
-        variables: {token}
-    })
-
-    //console.log(getUserPovrat)
+    const [getUser] = useMutation(GET_USER)
 
     return (
         <div>
             <h1>MAIN PAGE</h1> <br/>
-            <button onClick={()=>logout()}>LOGOUT</button>
+            <h1>{user && user.name}</h1>
+            <button onClick={()=>logout(history)}>LOGOUT</button>
         </div>
     )
 }

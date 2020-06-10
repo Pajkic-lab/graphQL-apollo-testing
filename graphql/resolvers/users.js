@@ -52,7 +52,12 @@ module.exports = {
 
     async getUser(_, {token}) {
       try {
-        //const user = await User.findById(req.user.id)
+        const decoded = jwt.verify(token, SECRET_KEY)
+        const id = decoded.user.id
+        
+        const user = await User.findById(id)
+        const { name, email, _id } = user
+        return{ name, email, _id }
       } catch (err) {
         console.log(err)
       }

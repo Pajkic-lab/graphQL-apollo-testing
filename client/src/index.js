@@ -13,10 +13,6 @@ const client = new ApolloClient({
     })
   })
 
-const token = localStorage.getItem('token')
-/*if(token) {
-  store.dispatch({ type: AUTHENTICATE })
-}*/
 
 
 ReactDOM.render(

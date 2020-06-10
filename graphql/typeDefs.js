@@ -7,7 +7,7 @@ type Token {
 }
 type User {
     email: String
-    id: ID
+    _id: ID
     name: String
 }
 type Mutation {
