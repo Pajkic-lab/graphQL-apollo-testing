@@ -14,26 +14,23 @@ const AuthState = props => {
 
     const [state, dispatch] = useReducer(authReducer, initialState)
 
-    const register = (data, history) => {
+    const register = (data) => {
         const token = data.register.token
         dispatch({
           type: REGISTER_SUCCESS,
           payload: token
       }) 
-      history.push('/mainpage')
     }
 
-    const login = (data, history) => {
+    const login = (data) => {
         const token = data.login.token
         dispatch({
           type: LOGIN_SUCCESS,
           payload: token
         })
-        history.push('/mainpage')
     }
 
     const loadUser = ({getUser : {email, name, _id}}) => {
-      console.log({email, name, _id})
         dispatch({
           type: LOAD_USER,
           payload: {email, name, _id}
@@ -55,7 +52,8 @@ const AuthState = props => {
           loadUser: loadUser,
           logout: logout,
           user: state.user,
-          token: state.token
+          token: state.token,
+          isAuthenticated: state.isAuthenticated
         }}
         >
           { props.children }
