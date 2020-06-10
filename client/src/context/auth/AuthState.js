@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react'
 import authContext from './authContext'
 import authReducer from './authReducer'
-import { REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT } from '../types'
+import { REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, LOAD_USER } from '../types'
 
 
 
@@ -32,6 +32,13 @@ const AuthState = props => {
         history.push('/mainpage')
     }
 
+    const loadUser = () => {
+        dispatch({
+          type: LOAD_USER,
+          payload: "nesto"
+        })
+    }
+
     const logout = () => {
         dispatch({
             type: LOGOUT
@@ -43,8 +50,10 @@ const AuthState = props => {
         value={{
           register: register,
           login: login,
+          loadUser: loadUser,
           logout: logout,
-          user: state.user
+          user: state.user,
+          token: state.token
         }}
         >
           { props.children }

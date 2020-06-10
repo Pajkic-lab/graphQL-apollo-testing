@@ -22,7 +22,9 @@ export const LOGIN = gql`
 export const GET_USER = gql`
   mutation getUser( $token: String! ) {
       getUser(token: $token) {
-          user
+          email
+          id
+          name
       }
   }
 `

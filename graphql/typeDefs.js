@@ -13,8 +13,9 @@ type User {
 type Mutation {
     register( name: String!, email: String!, password: String! ): Token!
     login( email: String!, password: String! ): Token!
-    getUser( token: String! ): User!
+    getUser( token: String!): User!
 }
 type Query {
     greeting: String
 }
+`

@@ -50,9 +50,9 @@ module.exports = {
     },  
 
 
-    async getUser(_, { token }) {
+    async getUser(_, {token}) {
       try {
-        console.log(token)
+        //const user = await User.findById(req.user.id)
       } catch (err) {
         console.log(err)
       }

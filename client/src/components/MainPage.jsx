@@ -7,13 +7,19 @@ import { GET_USER } from '../graphql'
 const MainPage = () => {
 
     const authContext = useContext(AuthContext)
-    const { logout } = authContext
+    const { loadUser, logout } = authContext
+    let token = JSON.stringify(authContext.token)
 
-    useEffect(()=>{
-        //loadUser()
+    useEffect( ()=>{
+        getUser() 
+        //loadUser(data)
     }, [])
 
-    const [getUser] = useMutation(GET_USER)
+    const [getUser] = useMutation(GET_USER, {
+        variables: {token}
+    })
+
+    //console.log(getUserPovrat)
 
     return (
         <div>
