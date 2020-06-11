@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, Fragment, useState } from 'react'
 import AuthContext from '../context/auth/authContext'
+import TodoContext from '../context/todo/todoContext'
 import { useMutation } from '@apollo/client'
-import { GET_USER } from '../graphql'
+import { GET_USER, CREATE_TODO } from '../graphql'
 
 
 const MainPage = ({history}) => {
@@ -11,19 +12,23 @@ const MainPage = ({history}) => {
     })
 
     const {todo} = formData
+
+    const authContext = useContext(AuthContext)
+    const { loadUser, logout, user, token } = authContext
+
+    const todoContext = useContext(TodoContext)
+    const { addTodo, todos } = todoContext
     
     const onChange = e => {setFormData({
         ...formData, [e.target.name]: e.target.value
     })}
 
-    const onSubmit = e => {
+    const onSubmit = async e => {
         e.preventDefault()
-        //addTodo()
+        const {data} = await createTodo({variables: {token, todo}})
+        addTodo(data)
+        setFormData({ ...formData, todo: '', todos: [] })
     }
-
-    const authContext = useContext(AuthContext)
-    const { loadUser, logout, user } = authContext
-    const token = authContext.token
 
     useEffect( ()=>{
         async function fetchData() {
@@ -31,13 +36,15 @@ const MainPage = ({history}) => {
         loadUser(data)
         }
         fetchData()
+        // eslint-disable-next-line
     }, [])
 
     const [getUser] = useMutation(GET_USER)
+    const [createTodo] = useMutation(CREATE_TODO)
 
     return (
         <div>
-            <h1>MAIN PAGE</h1> <br/>
+            <h1>-TODO LIST-</h1> <br/>
             <h1>{user && user.name}</h1>
             <button onClick={()=>logout(history)}>LOGOUT</button> <br /> <br />
 
@@ -46,6 +53,12 @@ const MainPage = ({history}) => {
                     <input onChange={onChange} placeholder='Add Todo' name='todo' value={todo} required /> <br/>
                     <button>ADD</button>
                 </form>
+            </Fragment>
+
+            <Fragment>
+                {todos && todos.map(todo=> <li key={todo._id}>
+                    {todo.todo}
+                </li>)}
             </Fragment>
         </div>
     )

@@ -28,3 +28,12 @@ export const GET_USER = gql`
       }
   }
 `
+export const CREATE_TODO = gql`
+  mutation createTodo( $token: String!, $todo: String! ) {
+      createTodo( token: $token, todo: $todo ) {
+         _id
+         user
+         todo
+      }
+  }
+`

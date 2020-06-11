@@ -44,6 +44,7 @@ const LandingPage = ({history}) => {
         if (isAuthenticated) {
           history.push("/mainpage")
         } 
+        // eslint-disable-next-line
       }, [isAuthenticated])
 
     return (

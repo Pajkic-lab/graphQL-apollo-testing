@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App'
 import AuthState from './context/auth/AuthState'
+import TodoState from './context/todo/TodoState'
 
 import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider } from '@apollo/client'
 
@@ -18,9 +19,11 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <AuthState>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
+      <TodoState>
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
+      </TodoState>
     </AuthState>
   </React.StrictMode>,
   document.getElementById('root')
