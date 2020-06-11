@@ -44,3 +44,12 @@ export const DELETE_TODO = gql`
         }
     }
 `
+export const GET_ALL_TODOS = gql`
+    mutation getAllTodos( $token: String! ) {
+        getAllTodos( token: $token ) {
+                _id
+                user
+                todo
+        }
+    }
+`

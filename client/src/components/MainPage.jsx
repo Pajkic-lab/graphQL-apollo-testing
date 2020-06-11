@@ -2,7 +2,7 @@ import React, { useContext, useEffect, Fragment, useState } from 'react'
 import AuthContext from '../context/auth/authContext'
 import TodoContext from '../context/todo/todoContext'
 import { useMutation } from '@apollo/client'
-import { GET_USER, CREATE_TODO, DELETE_TODO } from '../graphql'
+import { GET_USER, CREATE_TODO, DELETE_TODO, GET_ALL_TODOS } from '../graphql'
 
 
 const MainPage = ({history}) => {
@@ -17,7 +17,7 @@ const MainPage = ({history}) => {
     const { loadUser, logout, user, token } = authContext
 
     const todoContext = useContext(TodoContext)
-    const { addTodo, todos, removeTodo } = todoContext
+    const { addTodo, todos, removeTodo, fatchAllTodos } = todoContext
     
     const onChange = e => {setFormData({
         ...formData, [e.target.name]: e.target.value
@@ -34,6 +34,8 @@ const MainPage = ({history}) => {
         async function fetchData() {
         const {data} = await getUser({variables: {token}})  
         loadUser(data)
+        const povrat = await getAllTodos({variables: {token}})
+        fatchAllTodos(povrat)
         }
         fetchData()
         // eslint-disable-next-line
@@ -47,6 +49,7 @@ const MainPage = ({history}) => {
     const [getUser] = useMutation(GET_USER)
     const [createTodo] = useMutation(CREATE_TODO)
     const [deletTodo] = useMutation(DELETE_TODO)
+    const [getAllTodos] = useMutation(GET_ALL_TODOS)
 
     return (
         <div>

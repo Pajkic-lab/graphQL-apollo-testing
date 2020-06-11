@@ -24,6 +24,7 @@ type Mutation {
     getUser( token: String!): User!
     createTodo( token: String! todo: String!): Todo!
     deleteTodo( token: String! id: String!): Id!
+    getAllTodos( token: String!): [Todo]!
 }
 type Query {
     greeting: String
