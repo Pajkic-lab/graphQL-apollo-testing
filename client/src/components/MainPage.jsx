@@ -2,7 +2,7 @@ import React, { useContext, useEffect, Fragment, useState } from 'react'
 import AuthContext from '../context/auth/authContext'
 import TodoContext from '../context/todo/todoContext'
 import { useMutation } from '@apollo/client'
-import { GET_USER, CREATE_TODO } from '../graphql'
+import { GET_USER, CREATE_TODO, DELETE_TODO } from '../graphql'
 
 
 const MainPage = ({history}) => {
@@ -17,7 +17,7 @@ const MainPage = ({history}) => {
     const { loadUser, logout, user, token } = authContext
 
     const todoContext = useContext(TodoContext)
-    const { addTodo, todos } = todoContext
+    const { addTodo, todos, removeTodo } = todoContext
     
     const onChange = e => {setFormData({
         ...formData, [e.target.name]: e.target.value
@@ -39,8 +39,14 @@ const MainPage = ({history}) => {
         // eslint-disable-next-line
     }, [])
 
+    const click = async (id) => {
+        const {data} = await deletTodo({variables: {token, id}})
+        removeTodo(data)
+    } 
+
     const [getUser] = useMutation(GET_USER)
     const [createTodo] = useMutation(CREATE_TODO)
+    const [deletTodo] = useMutation(DELETE_TODO)
 
     return (
         <div>
@@ -56,7 +62,7 @@ const MainPage = ({history}) => {
             </Fragment>
 
             <Fragment>
-                {todos && todos.map(todo=> <li key={todo._id}>
+                {todos && todos.map(todo=> <li key={todo._id} onClick={()=> click(todo._id)}>
                     {todo.todo}
                 </li>)}
             </Fragment>

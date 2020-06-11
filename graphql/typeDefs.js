@@ -15,11 +15,15 @@ type Todo {
     user: ID
     todo: String
 }
+type Id {
+    id: ID
+}
 type Mutation {
     register( name: String!, email: String!, password: String! ): Token!
     login( email: String!, password: String! ): Token!
     getUser( token: String!): User!
     createTodo( token: String! todo: String!): Todo!
+    deleteTodo( token: String! id: String!): Id!
 }
 type Query {
     greeting: String

@@ -14,12 +14,26 @@ module.exports = {
                 if(user) {
                     const { _id } = user
                     todo = new Todo({ user: _id, todo: todo })
-                    //await todo.save()
+                    await todo.save()
                     return( todo )
                 }
             } catch (err) {
                 console.log(err)
             } 
+        },
+
+        async deleteTodo(_, {token, id}) {
+            try {
+                const decoded = jwt.verify(token, SECRET_KEY)
+                const userid = decoded.user.id
+                const user = await User.findById(userid)
+                if(user){
+                    await Todo.findByIdAndDelete(id)
+                    return {id}
+                }
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 }

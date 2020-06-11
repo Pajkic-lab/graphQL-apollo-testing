@@ -37,3 +37,10 @@ export const CREATE_TODO = gql`
       }
   }
 `
+export const DELETE_TODO = gql`
+    mutation deleteTodo( $token: String!, $id: String! ) {
+        deleteTodo( token: $token, id: $id ) {
+            id
+        }
+    }
+`
