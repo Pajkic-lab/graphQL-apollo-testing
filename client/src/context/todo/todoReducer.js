@@ -6,7 +6,7 @@ export default (state, action) => {
         case ADD_TODO:
             return {...state, todos: state.todos.concat(payload)}
         case REMOVE_TODO:
-            return {...state, todos: state.todos.filter(todo=> todo.id !== payload.id)}
+            return {...state, todos: state.todos.filter(todo=> todo._id !== payload)}
         case ADD_TODOS:
             return { ...state, todos: state.todos.concat(payload) }
         case LOGOUT:

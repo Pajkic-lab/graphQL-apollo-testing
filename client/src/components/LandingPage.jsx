@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import AuthContext from '../context/auth/authContext'
 import { useQuery, useMutation } from '@apollo/client'
-import { GET_GREETING, REGISTER, LOGIN } from '../graphql'
+import { GET_GREETING, REGISTER, LOGIN, GET_USER } from '../graphql'
 
 
 
@@ -14,7 +14,7 @@ const LandingPage = ({history}) => {
     })
 
     const authContext = useContext(AuthContext)
-    const { register, login, isAuthenticated } = authContext
+    const { register, login, isAuthenticated, token, loadUser } = authContext
 
     const { name, email, password } = formData
 
@@ -35,10 +35,6 @@ const LandingPage = ({history}) => {
         login(data)
         setFormData({ ...formData, name:'', email: '', password: ''})
     }
-    
-    const getGreetingsPovrat = useQuery(GET_GREETING)
-    const [reg] = useMutation(REGISTER)
-    const [log] = useMutation(LOGIN)
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -46,6 +42,21 @@ const LandingPage = ({history}) => {
         } 
         // eslint-disable-next-line
       }, [isAuthenticated])
+
+    useEffect( ()=> {
+        if(token) {
+            async function fetchData() {
+            const {data} = await getUser({variables: {token}})
+            loadUser(data)
+            }
+            fetchData()
+        }
+    })
+
+    const getGreetingsPovrat = useQuery(GET_GREETING)
+    const [reg] = useMutation(REGISTER)
+    const [log] = useMutation(LOGIN)
+    const [getUser] = useMutation(GET_USER)
 
     return (
         <div>

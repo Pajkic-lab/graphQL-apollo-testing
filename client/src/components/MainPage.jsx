@@ -17,7 +17,7 @@ const MainPage = ({history}) => {
     const { loadUser, logout, user, token } = authContext
 
     const todoContext = useContext(TodoContext)
-    const { addTodo, todos, removeTodo, fatchAllTodos } = todoContext
+    const { addTodo, todos, removeTodo, fatchAllTodos, removeCache } = todoContext
     
     const onChange = e => {setFormData({
         ...formData, [e.target.name]: e.target.value
@@ -55,7 +55,10 @@ const MainPage = ({history}) => {
         <div>
             <h1>-TODO LIST-</h1> <br/>
             <h1>{user && user.name}</h1>
-            <button onClick={()=>logout(history)}>LOGOUT</button> <br /> <br />
+            <button onClick={()=>{
+                logout(history)
+                removeCache()
+                }}>LOGOUT</button> <br /> <br />
 
             <Fragment>
                 <form onSubmit={onSubmit}>
@@ -65,6 +68,7 @@ const MainPage = ({history}) => {
             </Fragment>
 
             <Fragment>
+                <p>Click on todo to remove it</p>
                 {todos && todos.map(todo=> <li key={todo._id} onClick={()=> click(todo._id)}>
                     {todo.todo}
                 </li>)}

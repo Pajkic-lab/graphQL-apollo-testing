@@ -1,0 +1,4 @@
+
+//creat .env and insert following code
+MONGO_URI = <   >
+SECRET_KEY = <   >

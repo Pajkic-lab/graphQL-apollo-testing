@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react'
 import todoContext from './todoContext'
 import todoReducer from './todoReducer'
-import { ADD_TODO, REMOVE_TODO, ADD_TODOS } from '../types'
+import { ADD_TODO, REMOVE_TODO, ADD_TODOS, LOGOUT } from '../types'
 
 const TodoState = props => {
     const initState = {
@@ -28,10 +28,15 @@ const TodoState = props => {
 
     const fatchAllTodos = ({data}) => {
         const {getAllTodos} = data
-        console.log(getAllTodos)
         dispatch({
             type: ADD_TODOS,
             payload: getAllTodos
+        })
+    }
+
+    const removeCache = () => {
+        dispatch({
+            type: LOGOUT
         })
     }
     return (
@@ -40,6 +45,7 @@ const TodoState = props => {
             addTodo: addTodo,
             removeTodo: removeTodo,
             fatchAllTodos: fatchAllTodos,
+            removeCache: removeCache,
             todos: state.todos
         }}
         >
